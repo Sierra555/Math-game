@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1.0"
+		/>
+		<title>Document</title>
+		<link
+			rel="stylesheet"
+			href="./styles.css"
+		/>
+		<link
+			href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap"
+			rel="stylesheet"
+		/>
+	</head>
+	<body>
+		<div class="board-container">
+			<div class="board">
+				<div class="question">
+					<label
+						class="question-label"
+						for="question-input"
+					></label>
+					<input
+						class="question-input"
+						id="question-input"
+						type="number"
+						autofocus
+					/>
+				</div>
+				<button
+					class="btn btn-left js-btn-check"
+					type="button"
+					>Check answer</button
+				>
+				<div class="flip-card btn-right">
+					<div class="flip-inner">
+						<button class="flip-front btn">Solution</button>
+						<div class="flip-back js-solution"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<script
+			type="module"
+			src="./script.js"
+		></script>
+	</body>
+</html>
