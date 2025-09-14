@@ -12,25 +12,28 @@ window.addEventListener("DOMContentLoaded", () => {
 	const card = document.querySelector(".flip-card");
 	const solutionReveal =
 		document.querySelector(".js-solution");
-
 	const selectLevel = board.querySelector("[data-level]");
 
 	const speed = 200;
 	let solution = "";
 
+	const savedLevel =
+		localStorage.getItem("level") || selectLevel.value;
+	selectLevel.value = savedLevel;
+
 	const randomNum = (min, max) =>
 		Math.floor(Math.random() * (max - min + 1) + min);
 
 	function createQuestion() {
+		const gameLevel = selectLevel.value;
+
 		const operators =
-			selectLevel.value === "easy"
-				? ["+", "-"]
-				: ["+", "-", "*"];
+			gameLevel === "easy" ? ["+", "-"] : ["+", "-", "*"];
 		const MIN_NUM = 0;
 		const MAX_NUM =
-			selectLevel.value === "hard"
+			gameLevel === "hard"
 				? 100
-				: selectLevel.value === "medium"
+				: gameLevel === "medium"
 				? 20
 				: 50;
 
@@ -45,7 +48,7 @@ window.addEventListener("DOMContentLoaded", () => {
 			];
 
 		if (
-			selectLevel.value === "easy" &&
+			gameLevel === "easy" &&
 			operator === "-" &&
 			num1 < num2
 		) {
@@ -105,7 +108,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
 	function handleCheckAnswer() {
 		const value = Number(questionInput.value);
-		if (!value && value !== 0) return;
+		if (!value && isNaN(value)) return;
 
 		if (value === solution) {
 			questionInput.classList.add("correct");
@@ -121,7 +124,10 @@ window.addEventListener("DOMContentLoaded", () => {
 		}
 	}
 
-	selectLevel.addEventListener("change", switchQuestion);
+	selectLevel.addEventListener("change", () => {
+		localStorage.setItem("level", selectLevel.value);
+		switchQuestion();
+	});
 
 	checkAnswerBtn.addEventListener(
 		"click",
