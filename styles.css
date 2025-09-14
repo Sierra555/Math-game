@@ -97,7 +97,9 @@ input[type="number"]::-webkit-inner-spin-button {
 .level {
 	grid-column: 1;
 	grid-row-start: 3;
+	text-align-last: center;
 }
+
 .flip-card {
 	perspective: 1000px;
 	width: 163px;
