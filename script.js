@@ -128,6 +128,10 @@ window.addEventListener("DOMContentLoaded", () => {
 		handleCheckAnswer
 	);
 
+	questionInput.addEventListener("keydown", (e) => {
+		if (e.key === "Enter") handleCheckAnswer();
+	});
+
 	card.addEventListener("click", () =>
 		card.classList.toggle("flipped")
 	);
