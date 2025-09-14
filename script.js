@@ -1,12 +1,10 @@
 window.addEventListener("DOMContentLoaded", () => {
-	const operators = ["+", "-", "*"];
-	const MIN_NUM = 0;
-	const MAX_NUM = 100;
 	const board = document.querySelector(".board");
-	const questionLabel = board.querySelector(
+	const question = document.querySelector(".question");
+	const questionLabel = question.querySelector(
 		".question-label"
 	);
-	const questionInput = board.querySelector(
+	const questionInput = question.querySelector(
 		".question-input"
 	);
 	const checkAnswerBtn =
@@ -15,6 +13,8 @@ window.addEventListener("DOMContentLoaded", () => {
 	const solutionReveal =
 		document.querySelector(".js-solution");
 
+	const selectLevel = board.querySelector("[data-level]");
+
 	const speed = 200;
 	let solution = "";
 
@@ -22,12 +22,35 @@ window.addEventListener("DOMContentLoaded", () => {
 		Math.floor(Math.random() * (max - min + 1) + min);
 
 	function createQuestion() {
-		const num1 = randomNum(MIN_NUM, MAX_NUM);
-		const num2 = randomNum(MIN_NUM, MAX_NUM);
+		const operators =
+			selectLevel.value === "easy"
+				? ["+", "-"]
+				: ["+", "-", "*"];
+		const MIN_NUM = 0;
+		const MAX_NUM =
+			selectLevel.value === "hard"
+				? 100
+				: selectLevel.value === "medium"
+				? 20
+				: 50;
+
+		let [num1, num2] = [
+			randomNum(MIN_NUM, MAX_NUM),
+			randomNum(MIN_NUM, MAX_NUM),
+		];
+		console.log(num1, num2);
 		const operator =
 			operators[
 				Math.floor(Math.random() * operators.length)
 			];
+
+		if (
+			selectLevel.value === "easy" &&
+			operator === "-" &&
+			num1 < num2
+		) {
+			[num1, num2] = [num2, num1];
+		}
 
 		solution = eval(`${num1} ${operator} ${num2}`);
 		solutionReveal.textContent = solution;
@@ -61,26 +84,33 @@ window.addEventListener("DOMContentLoaded", () => {
 		typeWriter(createQuestion());
 	}
 
+	function switchQuestion() {
+		setTimeout(() => {
+			question.classList.add("slide-out");
+			card.classList.remove("flipped");
+		}, 700);
+
+		setTimeout(() => {
+			question.classList.add("slide-in");
+			question.classList.remove("slide-out");
+
+			generateQuestion();
+
+			setTimeout(
+				() => question.classList.remove("slide-in"),
+				700
+			);
+		}, 1400);
+	}
+
 	function handleCheckAnswer() {
 		const value = Number(questionInput.value);
 		if (!value && value !== 0) return;
 
 		if (value === solution) {
 			questionInput.classList.add("correct");
-			setTimeout(() => {
-				board.classList.add("slide-out");
-				card.classList.remove("flipped");
-			}, 700);
 
-			setTimeout(() => {
-				board.classList.add("slide-in");
-				board.classList.remove("slide-out");
-				generateQuestion();
-				setTimeout(
-					() => board.classList.remove("slide-in"),
-					700
-				);
-			}, 1400);
+			switchQuestion();
 		} else {
 			questionInput.classList.add("wrong");
 			setTimeout(() => {
@@ -91,12 +121,16 @@ window.addEventListener("DOMContentLoaded", () => {
 		}
 	}
 
+	selectLevel.addEventListener("change", switchQuestion);
+
 	checkAnswerBtn.addEventListener(
 		"click",
 		handleCheckAnswer
 	);
+
 	card.addEventListener("click", () =>
 		card.classList.toggle("flipped")
 	);
+
 	window.addEventListener("load", generateQuestion);
 });
