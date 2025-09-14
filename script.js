@@ -38,7 +38,7 @@ window.addEventListener("DOMContentLoaded", () => {
 			randomNum(MIN_NUM, MAX_NUM),
 			randomNum(MIN_NUM, MAX_NUM),
 		];
-		console.log(num1, num2);
+
 		const operator =
 			operators[
 				Math.floor(Math.random() * operators.length)
