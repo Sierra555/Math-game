@@ -142,5 +142,5 @@ window.addEventListener("DOMContentLoaded", () => {
 		card.classList.toggle("flipped")
 	);
 
-	window.addEventListener("load", generateQuestion);
+	generateQuestion();
 });
