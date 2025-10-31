@@ -4,6 +4,10 @@
 	box-sizing: border-box;
 }
 
+html {
+	overscroll-behavior-block: none;
+}
+
 button,
 input,
 select,
